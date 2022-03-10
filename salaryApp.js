@@ -80,15 +80,19 @@ const initialCountListener = function () {
 };
 
 function addRecordHandler() {
-  const name = document.getElementById("name").value;
-  const salary = document.getElementById("salary").value;
+  const nameId = document.getElementById("name");
+  const name = nameId.value;
+  const salaryId = document.getElementById("salary");
+  const salary = salaryId.value;
+  nameId.value = "";
+  salaryId.value = "";
 
   if (!name || !salary) {
     showDataError(name, salary);
     return;
   }
 
-  addRecord(name, !salary);
+  addRecord(name, salary);
 }
 
 function addRecord(name, salary) {
@@ -133,9 +137,11 @@ const displayLastItemDialog = function (lastItem) {
   const dlg = document.getElementById("dialog-last-item");
   dlg.classList.remove("hide");
   document.getElementById("showName").innerText = lastItem.name;
+  // document.getElementById("showName").innerText = "";
   document.getElementById("showSalary").innerText = d3.format(",.0f")(
     lastItem.salary
   );
+  // document.getElementById("showSalary").innerText = "";
   dlg.dialog({
     buttons: {
       Ok: function () {
@@ -225,7 +231,7 @@ const uniquifyNames = function (items) {
   const uniqueNames = {};
 
   return items.map(function (item) {
-    if (uniqueNames[item.name]) {
+    if (uniqueNames[item.name] !== undefined) {
       uniqueNames[item.name] += " ";
       item.name += uniqueNames[item.name];
     } else {
